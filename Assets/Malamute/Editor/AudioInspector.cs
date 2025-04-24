@@ -44,6 +44,19 @@ public class AudioInspector : Editor
         
         GUILayout.EndHorizontal();
         
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Generate\nTTS"))
+        {
+            actions.StartPlayback();
+        }
+        
+        if (GUILayout.Button("Play\nTTS"))
+        {
+            actions.StopPlayback();
+        }
+        
+        GUILayout.EndHorizontal();
+        
         GUI.enabled = Application.isEditor;
         
         base.OnInspectorGUI();
