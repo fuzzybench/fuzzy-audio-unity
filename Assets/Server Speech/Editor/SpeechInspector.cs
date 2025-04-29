@@ -9,60 +9,55 @@ public class SpeechInspector : Editor
     public override void OnInspectorGUI()
     {
         GUI.enabled = Application.isPlaying;
-        
-        SpeechLogic actions = target as SpeechLogic;
 
-        
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Start\nRecording"))
+        SpeechLogic actions = target as SpeechLogic;
+        GUILayout.Label("Speech To Text (STT)");
+        if (GUILayout.Button("Start Audio Recording"))
         {
             actions.StartAudioRecording();
         }
-        
-        if (GUILayout.Button("Stop\nRecording"))
+
+        if (GUILayout.Button("Stop Audio Recording"))
         {
             actions.StopAudioRecording();
         }
-        
-        GUILayout.EndHorizontal();
-        
-        if (GUILayout.Button("POST Recording"))
+
+        if (GUILayout.Button("Send Audio Recording"))
         {
             actions.PostLatestAudio();
         }
         
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Start\nPlayback"))
+        
+        GUILayout.Label("Text To Speech (STT)");
+
+        if (GUILayout.Button("Start Playback"))
         {
             actions.StartPlayback();
         }
-        if (GUILayout.Button("Pause\nPlayback"))
+
+        if (GUILayout.Button("Pause Playback"))
         {
             actions.PausePlayback();
         }
-        
-        if (GUILayout.Button("Stop\nPlayback"))
+
+        if (GUILayout.Button("Stop Playback"))
         {
             actions.StopPlayback();
         }
-        
-        GUILayout.EndHorizontal();
-        
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Generate\nTTS"))
+
+        if (GUILayout.Button("Generate TTS"))
         {
             actions.StartPlayback();
         }
-        
-        if (GUILayout.Button("Play\nTTS"))
+
+        if (GUILayout.Button("Play TTS"))
         {
             actions.StopPlayback();
         }
-        
-        GUILayout.EndHorizontal();
-        
+
+
         GUI.enabled = Application.isEditor;
-        
+
         base.OnInspectorGUI();
     }
 }
