@@ -1,12 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
 
@@ -24,13 +19,9 @@ public class Payload<T>
     }
 }
 
-
 [Serializable]
 public class AudioObject : Payload<AudioObject>
 {
-    public string audioHash;
-    public int audioTimestamp;
-    [HideInInspector]
     public float[] audioData;
 }
 
@@ -39,19 +30,20 @@ public class SpeechLogic : MonoBehaviour
     [Header("Server Settings")] 
     public string serverUri = "http://100.00.00.1:44000";
     
-    [Header("Speech Data")]
-    public AudioClip speechAudioClip;
+    [Header("STT Data (Whisper)")]
+    public AudioClip sttAudioClip;
     [TextArea]
-    public string speechTranscript;
+    public string sttTranscript;
     
+    [Header("TTS Data (Coqui)")]
     public AudioObject audioObject;
-    public AudioSource audioSource;
-
-    public bool isRecording;
-
-    private AudioClip microphoneRecordingBuffer;
     
-
+    
+    private AudioSource audioSource;
+    [SerializeField]
+    private bool isRecording;
+    [SerializeField]
+    private AudioClip microphoneRecordingBuffer;
     private float recordingStartTime;
     private float[] data;
 
@@ -65,11 +57,7 @@ public class SpeechLogic : MonoBehaviour
     {
         print($"Start: Audio Recording");
         if (isRecording) {return;}
-        audioObject = new AudioObject
-        {
-            audioTimestamp = (int)DateTimeOffset.Now.ToUnixTimeSeconds(),
-            audioHash = Guid.NewGuid().ToString()
-        };
+        audioObject = new AudioObject();
         isRecording = true;
         recordingStartTime = Time.time;
         microphoneRecordingBuffer = Microphone.Start("", false, 300, 44100);
@@ -101,7 +89,7 @@ public class SpeechLogic : MonoBehaviour
         recordingNew.SetData(data, 0);
 
         // ... copy audio clip reference to public field
-        speechAudioClip = recordingNew;
+        sttAudioClip = recordingNew;
         // ... copy audio float data reference to public field
         audioObject.audioData = data;
         print($"unloading audio @ {Time.time}");
@@ -124,7 +112,7 @@ public class SpeechLogic : MonoBehaviour
 
     public void StartPlayback()
     {
-        audioSource.PlayOneShot(speechAudioClip);
+        audioSource.PlayOneShot(sttAudioClip);
     }
 
     public void StopPlayback()
