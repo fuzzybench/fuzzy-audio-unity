@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(AudioController)), CanEditMultipleObjects]
-public class AudioInspector : Editor
+[CustomEditor(typeof(SpeechLogic)), CanEditMultipleObjects]
+public class SpeechInspector : Editor
 {
     public override void OnInspectorGUI()
     {
         GUI.enabled = Application.isPlaying;
         
-        AudioController actions = target as AudioController;
+        SpeechLogic actions = target as SpeechLogic;
 
         
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Start\nRecording"))
         {
-            actions.StartRecording();
+            actions.StartAudioRecording();
         }
         
         if (GUILayout.Button("Stop\nRecording"))
         {
-            actions.StopRecording();
+            actions.StopAudioRecording();
         }
         
         GUILayout.EndHorizontal();
@@ -35,6 +35,10 @@ public class AudioInspector : Editor
         if (GUILayout.Button("Start\nPlayback"))
         {
             actions.StartPlayback();
+        }
+        if (GUILayout.Button("Pause\nPlayback"))
+        {
+            actions.PausePlayback();
         }
         
         if (GUILayout.Button("Stop\nPlayback"))

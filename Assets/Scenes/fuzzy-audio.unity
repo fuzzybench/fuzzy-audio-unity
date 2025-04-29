@@ -128,11 +128,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 321247071}
-  - component: {fileID: 321247073}
+  - component: {fileID: 321247077}
   - component: {fileID: 321247072}
-  - component: {fileID: 321247076}
-  - component: {fileID: 321247075}
   - component: {fileID: 321247074}
+  - component: {fileID: 321247076}
   m_Layer: 0
   m_Name: XRC-Server-Speech
   m_TagString: Untagged
@@ -252,27 +251,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &321247073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321247070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 550de7d4acc88ea4180061e6e84b72fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transcript: 
-  audioObject:
-    audioHash: 
-    audioTimestamp: 0
-    audioData: []
-  audioSource: {fileID: 0}
-  isRecording: 0
-  isRecordingSent: 0
-  lastRecordedaAudioClip: {fileID: 0}
 --- !u!114 &321247074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,18 +261,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 488e45ca0d6d3e848ab4a88cfb5493b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &321247075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321247070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8ca299e83aab4d4bbf23084c844fc08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &321247076
@@ -309,6 +275,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8c7665fb89c29489829a247b5dd3d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &321247077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321247070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed099f240947bb43af8899a9de894f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serverUri: http://100.00.00.1:44000
+  speechAudioClip: {fileID: 0}
+  speechTranscript: 
+  audioObject:
+    audioHash: 
+    audioTimestamp: 0
+    audioData: []
+  audioSource: {fileID: 0}
+  isRecording: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
