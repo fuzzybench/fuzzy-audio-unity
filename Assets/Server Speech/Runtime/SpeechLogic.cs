@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 
 
@@ -20,7 +21,26 @@ public class Payload<T>
 }
 
 [Serializable]
-public class AudioObject : Payload<AudioObject>
+public class STTRequest : Payload<STTRequest>
+{
+    public float[] audioData;
+}
+
+
+[Serializable]
+public class STTResponse : Payload<STTResponse>
+{
+    public string transcript;
+}
+
+[Serializable]
+public class TTSRequest : Payload<TTSRequest>
+{
+    public string transcript;
+}
+
+[Serializable]
+public class TTSResponse : Payload<TTSResponse>
 {
     public float[] audioData;
 }
@@ -28,18 +48,23 @@ public class AudioObject : Payload<AudioObject>
 public class SpeechLogic : MonoBehaviour
 {
     [Header("Server Settings")] 
-    public string serverUri = "http://100.00.00.1:44000";
+    public string serverUri = "https://128.84.84.84:44000";
+    public STTRequest sttRequest;
+    public STTResponse sttResponse;
+    public TTSRequest ttsRequest;
+    public TTSResponse ttsResponse;
     
     [Header("STT Data (Whisper)")]
     public AudioClip sttAudioClip;
     [TextArea]
     public string sttTranscript;
+
+    [Header("TTS Data (Coqui)")] 
+    public AudioClip ttsAudioClip;
+    [TextArea]
+    public string ttsTranscript;
     
-    [Header("TTS Data (Coqui)")]
-    public AudioObject audioObject;
-    
-    
-    private AudioSource audioSource;
+    // 
     [SerializeField]
     private bool isRecording;
     [SerializeField]
@@ -50,14 +75,26 @@ public class SpeechLogic : MonoBehaviour
     private void Start()
     {
         isRecording = false;
-        audioSource = this.GetComponent<AudioSource>();
+    }
+    
+    
+    public void StartServerSTT()
+    {
+        print($"Starting Coroutine: PostServerSTT");
+        StartCoroutine(PostSTT());
+    }
+
+    public void StartServerTTS()
+    {
+        print($"Starting Coroutine: Post Server TTS");
+        StartCoroutine(PostTTS());
     }
     
     public void StartAudioRecording()
     {
         print($"Start: Audio Recording");
         if (isRecording) {return;}
-        audioObject = new AudioObject();
+        sttRequest = new STTRequest();
         isRecording = true;
         recordingStartTime = Time.time;
         microphoneRecordingBuffer = Microphone.Start("", false, 300, 44100);
@@ -91,69 +128,21 @@ public class SpeechLogic : MonoBehaviour
         // ... copy audio clip reference to public field
         sttAudioClip = recordingNew;
         // ... copy audio float data reference to public field
-        audioObject.audioData = data;
+        sttRequest.audioData = data;
         print($"unloading audio @ {Time.time}");
         microphoneRecordingBuffer.UnloadAudioData();
         //recordingNew.UnloadAudioData();
         isRecording = false;
     }
 
-
-
-    public IEnumerator PostLatestAudio()
+    
+    public IEnumerator PostSTT()
     {
-        
-        print($"POST: Audio Recording");
-        string endpoint = $"{serverUri}/audio";
-        string json = audioObject.SerializeToJson();
-        yield return StartCoroutine(Post(endpoint, json, Debug.Log));
-        print("exit posting audio");
-    }
-
-    public void StartPlayback()
-    {
-        audioSource.PlayOneShot(sttAudioClip);
-    }
-
-    public void StopPlayback()
-    {
-        audioSource.Stop();
-    }
-
-    public void PausePlayback()
-    {
-        audioSource.Pause();
-    }
-
-    public IEnumerator Get(string endpoint, Action<string> callback)
-    {
-        //UnityWebRequest webRequest = CreateWebRequest(endpoint, "GET");
-        UnityWebRequest webRequest = new UnityWebRequest(serverUri, "GET");
-        
-        DownloadHandler dH = new DownloadHandlerBuffer();
-        webRequest.downloadHandler = dH;
-        UploadHandler uH = new UploadHandlerRaw(null);
-        webRequest.uploadHandler = uH;
-        
-        yield return webRequest.SendWebRequest();
-        if (webRequest.result != UnityWebRequest.Result.Success)
-        {
-            callback(webRequest.error);
-            webRequest.Dispose();
-        }
-        else
-        {
-            callback(webRequest.downloadHandler.text);
-            webRequest.Dispose();
-        }
-    }
-
-    public IEnumerator Post(string endpoint, string json, Action<string> callback)
-    {
+        string json = sttRequest.SerializeToJson();
         byte[] bytePayload = System.Text.Encoding.UTF8.GetBytes(json);
         print($"size is {bytePayload.Length}");
         
-        UnityWebRequest webRequest = new UnityWebRequest(serverUri, "POST");
+        UnityWebRequest webRequest = new UnityWebRequest(serverUri+"/stt", "POST");
         webRequest.SetRequestHeader("Content-Type", "application/json");
         DownloadHandler dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
@@ -163,22 +152,24 @@ public class SpeechLogic : MonoBehaviour
         yield return webRequest.SendWebRequest();
         if (webRequest.result != UnityWebRequest.Result.Success)
         {
-            callback(webRequest.error);
+            print(webRequest.error);
             webRequest.Dispose();
         }
         else
         {
-            callback(webRequest.downloadHandler.text);
+            print(sttResponse);
+            print(webRequest.downloadHandler.text);
             webRequest.Dispose();
         }
     }
     
-    public IEnumerator PostTTS(string endpoint, string json, Action<string> callback)
+    public IEnumerator PostTTS()
     {
+        string json = ttsRequest.SerializeToJson();
         byte[] bytePayload = System.Text.Encoding.UTF8.GetBytes(json);
         print($"size is {bytePayload.Length}");
         
-        UnityWebRequest webRequest = new UnityWebRequest(serverUri, "POST");
+        UnityWebRequest webRequest = new UnityWebRequest(serverUri+"/tts", "POST");
         webRequest.SetRequestHeader("Content-Type", "application/json");
         DownloadHandler dH = new DownloadHandlerBuffer();
         webRequest.downloadHandler = dH;
@@ -188,12 +179,13 @@ public class SpeechLogic : MonoBehaviour
         yield return webRequest.SendWebRequest();
         if (webRequest.result != UnityWebRequest.Result.Success)
         {
-            callback(webRequest.error);
+            print(webRequest.error);
             webRequest.Dispose();
         }
         else
         {
-            callback(webRequest.downloadHandler.text);
+            print(ttsResponse);
+            print(webRequest.downloadHandler.text);
             webRequest.Dispose();
         }
     }

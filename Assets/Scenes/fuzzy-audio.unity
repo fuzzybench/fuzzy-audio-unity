@@ -129,8 +129,8 @@ GameObject:
   m_Component:
   - component: {fileID: 321247071}
   - component: {fileID: 321247077}
-  - component: {fileID: 321247072}
   - component: {fileID: 321247074}
+  - component: {fileID: 321247072}
   - component: {fileID: 321247076}
   m_Layer: 0
   m_Name: XRC-Server-Speech
@@ -288,14 +288,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverUri: http://100.00.00.1:44000
-  speechAudioClip: {fileID: 0}
-  speechTranscript: 
-  audioObject:
-    audioHash: 
-    audioTimestamp: 0
+  sttRequest:
     audioData: []
-  audioSource: {fileID: 0}
+  sttResponse:
+    transcript: 
+  ttsRequest:
+    transcript: 
+  ttsResponse:
+    audioData: []
+  sttAudioClip: {fileID: 0}
+  sttTranscript: 
+  ttsAudioClip: {fileID: 0}
+  ttsTranscript: 
   isRecording: 0
+  microphoneRecordingBuffer: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
