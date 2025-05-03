@@ -287,7 +287,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed099f240947bb43af8899a9de894f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverUri: http://100.00.00.1:44000
+  timeStart: 0
+  timeEnd: 0
+  timeElapsed: 0
+  serverUri: http://localhost:44000
   sttRequest:
     audioData: []
   sttResponse:

@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class SpeechFeedback : MonoBehaviour
 {
+    private SpeechLogic _speechLogic;
     private AudioSource audioSource;
-    private AudioClip sttAudioClip;
-    private AudioClip ttsAudioClip;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        _speechLogic = GetComponent<SpeechLogic>();
     }
 
     
     public void StartSTTPlayback()
     {
-        audioSource.PlayOneShot(sttAudioClip);
+        audioSource.PlayOneShot(_speechLogic.sttAudioClip);
     }
 
     public void StopSTTPlayback()
@@ -30,7 +30,7 @@ public class SpeechFeedback : MonoBehaviour
     
     public void StartTTSPlayback()
     {
-        audioSource.PlayOneShot(ttsAudioClip);
+        audioSource.PlayOneShot(_speechLogic.ttsAudioClip);
     }
 
     public void StopTTSPlayback()

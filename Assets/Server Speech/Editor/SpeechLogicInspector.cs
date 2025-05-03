@@ -33,7 +33,12 @@ public class SpeechLogicInspector : Editor
 
 
         GUILayout.Label("Text To Speech (STT)");
-
+        
+        if (GUILayout.Button("Copy STT transcript to TTS"))
+        {
+            actions.CopySTTtoTTS();
+        }
+        
         if (GUILayout.Button("Generate Server TTS"))
         {
             actions.StartServerTTS();
