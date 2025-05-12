@@ -1,0 +1,3 @@
+[submodule "Assets/edu.cornell.xrc.toolkit.speech"]
+	path = Assets/edu.cornell.xrc.toolkit.speech
+	url = https://github.com/xrcollaboratory/edu.cornell.xrc.toolkit.speech.git

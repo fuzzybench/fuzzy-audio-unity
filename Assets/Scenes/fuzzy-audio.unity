@@ -275,6 +275,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae8c7665fb89c29489829a247b5dd3d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_StartRecordingAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: d6e25d6e-4ff2-4241-b483-a539382a910f
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_StopRecordingAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 6f990fb2-d2d8-4180-a0fe-855e3f325796
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
 --- !u!114 &321247077
 MonoBehaviour:
   m_ObjectHideFlags: 0
